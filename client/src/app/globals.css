@@ -1,0 +1,183 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #fafafa;
+  --foreground: #18181b;
+}
+
+html.dark {
+  --background: #09090b;
+  --foreground: #fafafa;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.animate-pulse {
+  animation: pulse-soft 1.5s ease-in-out infinite;
+}
+
+/* Inverted border-radius feed cards (inverted_bouder-radius-2.html) */
+.feed-card {
+  --feed-card-bg: #e1e1e1;
+  --feed-card-surface: #fafafa;
+  --feed-card-text: #3d3d3d;
+  --feed-card-muted: #6b6b6b;
+  --feed-card-accent: #f2a93b;
+  --feed-card-btn-bg: #c9c9c9;
+  --feed-card-radius: 2rem;
+  --feed-card-notch-size: 4.5rem;
+  --feed-card-notch-r: 1.25rem;
+  --feed-card-btn-size: 3rem;
+  --feed-card-media-h: 5.5rem;
+  --feed-card-title-min-h: 2rem;
+  --feed-card-excerpt-min-h: 2.5rem;
+  --feed-card-tags-min-h: 1rem;
+  --feed-card-min-h: 18.5rem;
+  --feed-card-body-pr: calc(var(--feed-card-notch-size) + 0.5rem);
+  background-color: var(--feed-card-bg);
+  border-radius: var(--feed-card-radius);
+  overflow: hidden;
+  min-height: var(--feed-card-min-h);
+}
+
+@media (max-width: 639px) {
+  .feed-card {
+    --feed-card-radius: 1.25rem;
+    --feed-card-notch-size: clamp(3rem, 18vw, 3.5rem);
+    --feed-card-notch-r: 0.875rem;
+    --feed-card-btn-size: clamp(2.35rem, 13vw, 2.65rem);
+    --feed-card-media-h: auto;
+    --feed-card-title-min-h: 1.5rem;
+    --feed-card-excerpt-min-h: 2rem;
+    --feed-card-tags-min-h: 0.75rem;
+    --feed-card-min-h: 0;
+    min-height: 0;
+  }
+}
+
+@media (min-width: 640px) {
+  .feed-card {
+    --feed-card-media-h: 6.5rem;
+    --feed-card-min-h: 19.5rem;
+  }
+}
+
+.feed-card-body {
+  min-width: 0;
+  padding-right: var(--feed-card-body-pr);
+}
+
+.feed-card-media {
+  height: var(--feed-card-media-h);
+  margin-bottom: 0.75rem;
+}
+
+@media (max-width: 639px) {
+  .feed-card-media {
+    aspect-ratio: 16 / 9;
+    height: auto;
+    min-height: 6.5rem;
+    max-height: 10.5rem;
+  }
+}
+
+.feed-card-media-placeholder {
+  height: 100%;
+  width: 100%;
+  background-color: color-mix(in srgb, var(--feed-card-muted) 12%, var(--feed-card-bg));
+  border: 1px dashed color-mix(in srgb, var(--feed-card-muted) 28%, transparent);
+}
+
+html.dark .feed-card {
+  --feed-card-bg: #1c1c1f;
+  --feed-card-surface: #09090b;
+  --feed-card-text: #f4f4f5;
+  --feed-card-muted: #a1a1aa;
+  --feed-card-btn-bg: #27272a;
+}
+
+.feed-card-notch {
+  width: var(--feed-card-notch-size);
+  height: var(--feed-card-notch-size);
+  background-color: var(--feed-card-surface);
+  border-bottom-left-radius: var(--feed-card-radius);
+}
+
+.feed-card-notch-curve {
+  position: absolute;
+  width: var(--feed-card-notch-r);
+  height: var(--feed-card-notch-r);
+  background: transparent;
+  border-top-right-radius: var(--feed-card-notch-r);
+  box-shadow: calc(var(--feed-card-notch-r) / 2)
+    calc(var(--feed-card-notch-r) / -2) 0 calc(var(--feed-card-notch-r) / 2)
+    var(--feed-card-surface);
+}
+
+.feed-card-notch-curve--top {
+  left: calc(var(--feed-card-notch-r) * -1);
+  top: 0;
+}
+
+.feed-card-notch-curve--right {
+  right: 0;
+  bottom: calc(var(--feed-card-notch-r) * -1);
+}
+
+.feed-card-notch-btn {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feed-card-notch-btn-inner {
+  width: var(--feed-card-btn-size);
+  height: var(--feed-card-btn-size);
+  border-radius: 9999px;
+  background-color: var(--feed-card-btn-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.feed-card:hover .feed-card-notch-btn-inner {
+  transform: scale(1.05);
+}
+
+.feed-card-notch-icon {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .feed-card-notch-icon {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+}
