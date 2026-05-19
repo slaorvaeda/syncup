@@ -11,12 +11,29 @@ const cors = require("cors");
 
 const app = express();
 
+const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:3000")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+const allowVercelPreviews = process.env.CORS_ALLOW_VERCEL !== "false";
+const vercelOriginPattern = /^https:\/\/[\w-]+(\.[\w-]+)*\.vercel\.app$/;
+
+function corsOrigin(origin, callback) {
+  if (!origin) return callback(null, true);
+  if (allowedOrigins.includes(origin)) return callback(null, true);
+  if (allowVercelPreviews && vercelOriginPattern.test(origin)) {
+    return callback(null, true);
+  }
+  callback(null, false);
+}
+
 app.use(requestLogger);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN?.split(",") || ["http://localhost:3000"],
+    origin: corsOrigin,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
   })
